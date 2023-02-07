@@ -1,10 +1,11 @@
+import { NextPage } from "next";
 import { useState } from "react";
 
 type LoginMethod = "email" | "phone";
 
 const cls = (...className: string[]) => className.join(" ");
 
-const Enter = () => {
+const Enter: NextPage = () => {
   const [method, setMethod] = useState<LoginMethod>("email");
   const handleClickEmail = () => setMethod("email");
   const handleClickPhone = () => setMethod("phone");
@@ -49,11 +50,7 @@ const Enter = () => {
           </label>
           <div className="mt-2">
             {method === "email" ? (
-              <input
-                className="w-full border p-2 border-gray-200 rounded-md focus:border-orange-400 focus:ring-transparent"
-                type="email"
-                required
-              />
+              <input className="input" type="email" required />
             ) : null}
             {method === "phone" ? (
               <div className="flex w-full">
@@ -61,14 +58,14 @@ const Enter = () => {
                   +82
                 </span>
                 <input
-                  className="w-full border p-2 border-gray-200 border-l-0 focus:border-orange-400 focus:ring-transparent focus:border "
+                  className="input rounded-l-none border-l-0 hover:border-l focus:border-l"
                   type="number"
                   required
                 />
               </div>
             ) : null}
           </div>
-          <button className="w-full mt-4 p-3 bg-orange-400 text-white rounded-md outline-none">
+          <button className="button mt-4">
             {method === "email" ? "Get login link" : null}
             {method === "phone" ? "Get one-time password" : null}
           </button>
@@ -82,7 +79,7 @@ const Enter = () => {
               </span>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 px-4">
             <button className="col-center border border-gray-200 bg-gray-100 rounded-md p-2">
               <svg
                 className="w-5 h-5 text-gray-400"

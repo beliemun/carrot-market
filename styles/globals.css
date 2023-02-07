@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 
+* {
+  outline: none;
+}
+
 .col-center {
   @apply flex flex-col justify-center items-center;
 }
@@ -10,4 +14,13 @@
 .t-300 {
   @apply transition-all duration-300;
 }
+
+.button {
+  @apply w-full text-white bg-orange-400 hover:bg-orange-500 focus:ring focus:ring-orange-400 ring-offset-2 t-300 rounded-md p-3;
+}
+
+.input {
+  @apply w-full border rounded-md border-gray-200 focus:border-orange-400 focus:ring-transparent p-2;
+}
+
 @tailwind utilities;
