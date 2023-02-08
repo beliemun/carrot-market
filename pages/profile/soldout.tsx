@@ -3,7 +3,7 @@ import { NextPage } from "next";
 
 const SoldOut: NextPage = () => {
   return (
-    <Layout title={"SoldOut"}>
+    <Layout title={"Sold Out"} canGoBack={true}>
       <div className="flex flex-col divide-y">
         {[...Array(10)].map((_, i) => (
           <div key={i} className="flex  p-4 cursor-pointer">

@@ -2,7 +2,7 @@ import Layout from "@/components/layout";
 import { NextPage } from "next";
 const Detail: NextPage = () => {
   return (
-    <Layout title="Detail">
+    <Layout title="Detail" canGoBack={true}>
       <div className="p-4">
         <div>
           <div className="h-96 bg-gray-200 rounded-md" />

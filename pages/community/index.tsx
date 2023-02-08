@@ -1,9 +1,10 @@
-import Layout from "@/../components/layout";
+import Layout from "@/components/layout";
 import type { NextPage } from "next";
+import Link from "next/link";
 
 const Community: NextPage = () => {
   return (
-    <Layout title={"Community"}>
+    <Layout title={"Community"} canGoBack>
       <div>
         {[...Array(10)].map((_, i) => (
           <div key={i}>
@@ -58,7 +59,10 @@ const Community: NextPage = () => {
             </div>
           </div>
         ))}
-        <button className="fixed bottom-8 right-8 bg-orange-400 hover:bg-orange-500 t-300 rounded-full p-3 text-white shadow-black/20 shadow-xl">
+        <Link
+          href={"community/write"}
+          className="fixed bottom-8 right-8 bg-orange-400 hover:bg-orange-500 t-300 rounded-full p-3 text-white shadow-black/20 shadow-xl"
+        >
           <svg
             className="w-6 h-6"
             fill="none"
@@ -73,7 +77,7 @@ const Community: NextPage = () => {
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
             ></path>
           </svg>
-        </button>
+        </Link>
       </div>
     </Layout>
   );

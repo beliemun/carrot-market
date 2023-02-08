@@ -3,7 +3,7 @@ import { NextPage } from "next";
 
 const Chats: NextPage = () => {
   return (
-    <Layout title="Chats">
+    <Layout title="Chats" canGoBack={true}>
       <div className="divide-y">
         {[...Array(5)].map((_, i) => (
           <div

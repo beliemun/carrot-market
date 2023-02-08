@@ -3,7 +3,7 @@ import { NextPage } from "next";
 
 const Upload: NextPage = () => {
   return (
-    <Layout title="Upload">
+    <Layout title="Upload" canGoBack={true}>
       <div className="p-4">
         <div className="col-center h-48 border-2 border-gray-200 hover:border-orange-400 text-gray-400 hover:text-orange-400 border-dashed rounded-md cursor-pointer">
           <div>
