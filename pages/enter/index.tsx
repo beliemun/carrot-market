@@ -1,9 +1,8 @@
 import { NextPage } from "next";
 import { useState } from "react";
+import { c } from "../libs/utils";
 
 type LoginMethod = "email" | "phone";
-
-const cls = (...className: string[]) => className.join(" ");
 
 const Enter: NextPage = () => {
   const [method, setMethod] = useState<LoginMethod>("email");
@@ -20,7 +19,7 @@ const Enter: NextPage = () => {
             className={`grid grid-cols-2 w-full border-b border-gray-200 mt-4`}
           >
             <button
-              className={cls(
+              className={c(
                 "pb-4 border-b-2",
                 method === "email"
                   ? "text-orange-400 border-b-orange-400"
@@ -31,7 +30,7 @@ const Enter: NextPage = () => {
               Email
             </button>
             <button
-              className={cls(
+              className={c(
                 "pb-4 border-b-2",
                 method === "phone"
                   ? "text-orange-400 border-b-orange-400"
