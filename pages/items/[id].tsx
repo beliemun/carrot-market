@@ -1,5 +1,6 @@
-import Layout from "@/components/layout";
+import { Layout } from "@components/shared";
 import { NextPage } from "next";
+
 const Detail: NextPage = () => {
   return (
     <Layout title="Detail" canGoBack={true}>
