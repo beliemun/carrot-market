@@ -14,13 +14,23 @@ interface IFormProps {
 
 const Enter: NextPage = () => {
   const { register, handleSubmit, reset } = useForm<IFormProps>();
+  const [loading, setLoading] = useState(false);
   const [method, setMethod] = useState<LoginMethod>("email");
   const handleChangeTab = (type: LoginMethod) => {
     reset();
     setMethod(type);
   };
   const onValid = (data: IFormProps) => {
-    console.log(data);
+    setLoading(true);
+    fetch("/api/users/enter", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(() => {
+      setLoading(false);
+    });
   };
   return (
     <div className="my-6">
@@ -34,12 +44,12 @@ const Enter: NextPage = () => {
           >
             <TabButton
               method={method}
-              lable="email"
+              lable={"email"}
               onClick={() => handleChangeTab("email")}
             />
             <TabButton
               method={method}
-              lable="phone"
+              lable={"phone"}
               onClick={() => handleChangeTab("phone")}
             />
           </div>
@@ -68,7 +78,11 @@ const Enter: NextPage = () => {
             ) : null}
           </div>
           <button className="button mt-4">
-            {method === "email" ? "Get login link" : null}
+            {method === "email"
+              ? loading
+                ? "Loading"
+                : "Get login link"
+              : null}
             {method === "phone" ? "Get one-time password" : null}
           </button>
         </form>
