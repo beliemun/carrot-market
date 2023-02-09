@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useState } from "react";
-import { c } from "../libs/utils";
+import { c } from "../../libs/utils";
 
 type LoginMethod = "email" | "phone";
 

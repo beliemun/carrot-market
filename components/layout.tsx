@@ -1,4 +1,4 @@
-import { c } from "@/pages/libs/utils";
+import { c } from "@/libs/utils";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -16,7 +16,7 @@ const Layout = ({ title, canGoBack, hasTabBar, children }: ILayoutProps) => {
   return (
     <div className="col-cetner">
       <div>
-        <div className="fixed w-full row-center border-b border-gray-200 h-12 justify-between px-4">
+        <div className="fixed w-full bg-white row-center border-b border-gray-200 h-12 justify-between px-4">
           {canGoBack ? (
             <button className="w-10 h-10 col-center" onClick={handleGoback}>
               &larr;
