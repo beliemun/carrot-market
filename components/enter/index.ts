@@ -1,2 +1,3 @@
 import TabButton from "./tab-button";
-export { TabButton };
+import { TwiterButton, GithubButton } from "./social-button";
+export { TabButton, TwiterButton, GithubButton };

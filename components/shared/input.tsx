@@ -28,5 +28,6 @@ const Input = ({ frame, required, register, rest }: IInputProps) => {
     </div>
   );
 };
+21;
 
 export default Input;

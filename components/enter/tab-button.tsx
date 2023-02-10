@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { c } from "@libs/utils";
+import { c } from "@libs/client/utils";
 
 interface ITabButtonProps {
   method: "email" | "phone";

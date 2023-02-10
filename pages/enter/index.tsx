@@ -1,6 +1,7 @@
 import { TabButton } from "@components/enter";
-import { GithubButton, TwiterButton } from "@components/enter/social-buggon";
+import { GithubButton, TwiterButton } from "@components/enter";
 import { Input } from "@components/shared";
+import useMutation from "@libs/client/useMutation";
 import { NextPage } from "next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,25 +14,17 @@ interface IFormProps {
 }
 
 const Enter: NextPage = () => {
+  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
   const { register, handleSubmit, reset } = useForm<IFormProps>();
-  const [loading, setLoading] = useState(false);
   const [method, setMethod] = useState<LoginMethod>("email");
   const handleChangeTab = (type: LoginMethod) => {
     reset();
     setMethod(type);
   };
   const onValid = (data: IFormProps) => {
-    setLoading(true);
-    fetch("/api/users/enter", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then(() => {
-      setLoading(false);
-    });
+    enter(data);
   };
+  console.log(loading, data, error);
   return (
     <div className="my-6">
       <h3 className="text-3xl font-bold text-center text-orange-400">

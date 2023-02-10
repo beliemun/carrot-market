@@ -1,4 +1,4 @@
-import { c } from "@libs/utils";
+import { c } from "@libs/client/utils";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
