@@ -24,7 +24,6 @@ const Enter: NextPage = () => {
   const onValid = (data: IFormProps) => {
     enter(data);
   };
-  console.log(loading, data, error);
   return (
     <div className="my-6">
       <h3 className="text-3xl font-bold text-center text-orange-400">
@@ -76,7 +75,11 @@ const Enter: NextPage = () => {
                 ? "Loading"
                 : "Get login link"
               : null}
-            {method === "phone" ? "Get one-time password" : null}
+            {method === "phone"
+              ? loading
+                ? "Loading"
+                : "Get one-time password"
+              : null}
           </button>
         </form>
         <div>

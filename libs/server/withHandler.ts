@@ -1,5 +1,10 @@
 import { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
 
+export interface IResponseProps {
+  ok: boolean;
+  [key: string]: any;
+}
+
 const withHandler = (
   method: "GET" | "POST" | "DELETE",
   handler: NextApiHandler

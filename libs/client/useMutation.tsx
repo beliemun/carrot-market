@@ -13,6 +13,7 @@ const useMutation = (url: string): UseMutationType => {
   const [data, setData] = useState<undefined | any>(undefined);
   const [error, setError] = useState<undefined | any>(undefined);
   const mutation = (data: any): void => {
+    setLoading(true);
     fetch(url, {
       method: "POST",
       body: JSON.stringify(data),

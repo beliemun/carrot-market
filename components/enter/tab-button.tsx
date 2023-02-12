@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { c } from "@libs/client/utils";
 
 interface ITabButtonProps {
@@ -9,9 +9,6 @@ interface ITabButtonProps {
 }
 
 const TabButton = ({ method, onClick, lable, ...rest }: ITabButtonProps) => {
-  useEffect(() => {
-    console.log(method, method === "email");
-  }, [method]);
   return (
     <button
       className={c(
