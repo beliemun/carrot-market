@@ -8,22 +8,39 @@ import { useForm } from "react-hook-form";
 
 type LoginMethod = "email" | "phone";
 
-interface IFormProps {
+interface IEnterFormProps {
   email?: string;
   phone?: string;
 }
 
+interface ITokenFormProps {
+  token: string;
+}
+
+interface IMutationResult {
+  ok: boolean;
+}
+
 const Enter: NextPage = () => {
-  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
-  const { register, handleSubmit, reset } = useForm<IFormProps>();
+  const [enter, { loading, data, error }] =
+    useMutation<IMutationResult>("/api/users/enter");
+  const [confirm, { loading: tokenLoading, data: tokenData }] =
+    useMutation<IMutationResult>("/api/users/confirm");
+  const { register, handleSubmit, reset } = useForm<IEnterFormProps>();
+  const { register: toeknRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<ITokenFormProps>();
   const [method, setMethod] = useState<LoginMethod>("email");
   const handleChangeTab = (type: LoginMethod) => {
     reset();
     setMethod(type);
   };
-  const onValid = (data: IFormProps) => {
-    enter(data);
+  const onValid = (fromData: IEnterFormProps) => {
+    enter(fromData);
   };
+  const onTokenValid = (formData: ITokenFormProps) => {
+    confirm(formData);
+  };
+  console.log(tokenData);
   return (
     <div className="my-6">
       <h3 className="text-3xl font-bold text-center text-orange-400">
@@ -46,42 +63,62 @@ const Enter: NextPage = () => {
             />
           </div>
         </div>
-        <form className="p-4" onSubmit={handleSubmit(onValid)}>
-          <label className="text-sm">
-            {method === "email" ? "Email address" : null}
-            {method === "phone" ? "Phone number" : null}
-          </label>
-          <div className="mt-2">
-            {method === "email" ? (
+        {data?.ok ? (
+          <form className="p-4" onSubmit={tokenHandleSubmit(onTokenValid)}>
+            <label className="text-sm">Comfirmation Token</label>
+            <div className="mt-2">
               <Input
-                register={register("email")}
+                register={toeknRegister("token")}
                 frame="text"
+                type="number"
                 required
-                onSubmit={handleSubmit(onValid)}
+                onSubmit={tokenHandleSubmit(onTokenValid)}
               />
-            ) : null}
-            {method === "phone" ? (
-              <Input
-                register={register("phone")}
-                frame="price"
-                required
-                onSubmit={handleSubmit(onValid)}
-              />
-            ) : null}
-          </div>
-          <button className="button mt-4">
-            {method === "email"
-              ? loading
-                ? "Loading"
-                : "Get login link"
-              : null}
-            {method === "phone"
-              ? loading
-                ? "Loading"
-                : "Get one-time password"
-              : null}
-          </button>
-        </form>
+            </div>
+            <button className="button mt-4">
+              {tokenLoading ? "Loading" : "Comfirmation Token"}
+            </button>
+          </form>
+        ) : (
+          <form className="p-4" onSubmit={handleSubmit(onValid)}>
+            <label className="text-sm">
+              {method === "email" ? "Email address" : null}
+              {method === "phone" ? "Phone number" : null}
+            </label>
+            <div className="mt-2">
+              {method === "email" ? (
+                <Input
+                  register={register("email")}
+                  type="email"
+                  frame="text"
+                  required
+                  onSubmit={handleSubmit(onValid)}
+                />
+              ) : null}
+              {method === "phone" ? (
+                <Input
+                  register={register("phone")}
+                  type="number"
+                  frame="price"
+                  required
+                  onSubmit={handleSubmit(onValid)}
+                />
+              ) : null}
+            </div>
+            <button className="button mt-4">
+              {method === "email"
+                ? loading
+                  ? "Loading"
+                  : "Get login link"
+                : null}
+              {method === "phone"
+                ? loading
+                  ? "Loading"
+                  : "Get one-time password"
+                : null}
+            </button>
+          </form>
+        )}
         <div>
           <div className="py-2">
             <div className="absolute w-full border-t border-gray-200" />

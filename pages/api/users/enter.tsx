@@ -28,24 +28,24 @@ const handler: NextApiHandler<IResponseProps> = async (req, res) => {
     },
   });
   if (phone) {
-    const message = await twilio.messages.create({
-      messagingServiceSid: process.env.TWILIO_MSID,
-      to: process.env.MY_NUMBER!,
-      body: `Your login token is ${payload}`,
-    });
-    console.log(message);
+    // const message = await twilio.messages.create({
+    //   messagingServiceSid: process.env.TWILIO_MSID,
+    //   to: process.env.MY_NUMBER!,
+    //   body: `Your login token is ${payload}`,
+    // });
+    // console.log(message);
   } else if (email) {
-    const email = await mail.send({
-      from: "contact@kimxy.net",
-      to: "burngrit@icloud.com",
-      subject: "Your Carrot Market Verification Email",
-      text: `Your token is ${payload}`,
-      html: `<strong>Your token is ${payload}</strong>`,
-    });
-    console.log(email);
+    // const email = await mail.send({
+    //   from: "contact@kimxy.net",
+    //   to: "burngrit@icloud.com",
+    //   subject: "Your Carrot Market Verification Email",
+    //   text: `Your token is ${payload}`,
+    //   html: `<strong>Your token is ${payload}</strong>`,
+    // });
+    // console.log(email);
   }
 
-  return res.status(200).json({ ok: true });
+  return res.status(200).json({ ok: true, email, phone });
 };
 
 export default withHandler("POST", handler);

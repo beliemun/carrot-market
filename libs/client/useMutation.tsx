@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-interface IUseMutationProps {
+interface IUseMutationProps<T> {
   loading: boolean;
-  data?: object;
+  data?: T;
   error?: object;
 }
 
-type UseMutationType = [(data: any) => void, IUseMutationProps];
+type UseMutationType<T> = [(data: any) => void, IUseMutationProps<T>];
 
-const useMutation = (url: string): UseMutationType => {
+const useMutation = <T extends any>(url: string): UseMutationType<T> => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<undefined | any>(undefined);
   const [error, setError] = useState<undefined | any>(undefined);

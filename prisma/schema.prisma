@@ -29,7 +29,7 @@ model Token {
   updatedAt DateTime @updatedAt
 
   payload String @unique
-  user    User   @relation(fields: [userId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  Int
 
   @@index([userId])

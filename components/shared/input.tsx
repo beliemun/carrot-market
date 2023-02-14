@@ -1,14 +1,17 @@
+import { HTMLInputTypeAttribute } from "react";
+
 interface IInputProps {
   frame: "text" | "price";
   required?: boolean;
+  type?: HTMLInputTypeAttribute;
   [key: string]: any;
 }
 
-const Input = ({ frame, required, register, rest }: IInputProps) => {
+const Input = ({ frame, required, type, register, rest }: IInputProps) => {
   return frame === "text" ? (
     <input
       className="input"
-      type="email"
+      type={type}
       required={required}
       {...register}
       {...rest}
