@@ -1,10 +1,26 @@
 import { Layout } from "@components/shared";
+import useMutation from "@libs/client/useMutation";
 import { NextPage } from "next";
+import { useForm } from "react-hook-form";
+
+interface IUploadFormProps {
+  image: string;
+  price: number;
+  description: string;
+}
 
 const Upload: NextPage = () => {
+  const { register, handleSubmit } = useForm<IUploadFormProps>();
+  const [upload, { data, loading }] = useMutation("api/products");
+  const onValid = (data: IUploadFormProps) => {
+    if (loading) {
+      return;
+    }
+    console.log(data);
+  };
   return (
     <Layout title="Upload" canGoBack={true}>
-      <div className="p-4">
+      <form className="p-4" onSubmit={handleSubmit(onValid)}>
         <div className="col-center h-48 border-2 border-gray-200 hover:border-orange-400 text-gray-400 hover:text-orange-400 border-dashed rounded-md cursor-pointer">
           <div>
             <label>
@@ -22,8 +38,12 @@ const Upload: NextPage = () => {
                   strokeLinejoin="round"
                 />
               </svg>
-
-              <input className="hidden" type="file" />
+              <input
+                className="hidden"
+                type="file"
+                {...register("image", { required: true })}
+                required
+              />
             </label>
           </div>
         </div>
@@ -33,7 +53,13 @@ const Upload: NextPage = () => {
             <div className="absolute left-3">
               <span>$</span>
             </div>
-            <input className="input pl-7" type="text" placeholder="0.00" />
+            <input
+              className="input pl-7"
+              type="number"
+              placeholder="0.00"
+              required
+              {...register("price", { required: true })}
+            />
             <div className="absolute right-3">
               <span>USD</span>
             </div>
@@ -44,11 +70,18 @@ const Upload: NextPage = () => {
             Description
           </label>
           <div>
-            <textarea className="input" rows={4} />
+            <textarea
+              className="input"
+              rows={4}
+              required
+              {...register("description", { required: true })}
+            />
           </div>
         </div>
-        <button className="button mt-4">Upload product</button>
-      </div>
+        <button className="button mt-4" onSubmit={handleSubmit(onValid)}>
+          Upload product
+        </button>
+      </form>
     </Layout>
   );
 };

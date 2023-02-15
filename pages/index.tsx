@@ -58,7 +58,7 @@ const Home: NextPage = () => {
           </div>
         ))}
         <Link
-          href={"/items/upload"}
+          href={"/products/upload"}
           className="fixed bottom-20 right-8 bg-orange-400 hover:bg-orange-500 t-300 rounded-full p-3 text-white shadow-black/20 shadow-xl"
         >
           <svg

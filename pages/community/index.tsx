@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Community: NextPage = () => {
   return (
-    <Layout title={"Community"} canGoBack>
+    <Layout title={"Community"} canGoBack hasTabBar={true}>
       <div>
         {[...Array(10)].map((_, i) => (
           <div key={i}>

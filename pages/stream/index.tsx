@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Stream: NextPage = () => {
   return (
-    <Layout title="Stream" canGoBack={true}>
+    <Layout title="Stream" canGoBack={true} hasTabBar={true}>
       <div>
         <div className="divide-y">
           {[...Array(10)].map((_, i) => (
