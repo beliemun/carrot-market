@@ -48,4 +48,6 @@ const handler: NextApiHandler<IResponseProps> = async (req, res) => {
   return res.status(200).json({ ok: true, email, phone });
 };
 
-export default withApiSession(withHandler("POST", handler));
+export default withApiSession(
+  withHandler({ method: "POST", handler, isPrivate: false })
+);

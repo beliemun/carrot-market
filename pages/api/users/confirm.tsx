@@ -4,14 +4,13 @@ import { NextApiHandler } from "next";
 
 const handler: NextApiHandler<IResponseProps> = async (req, res) => {
   const { token } = req.body;
-  console.log("#1", token, typeof token);
   const exists = await prisma.token.findUnique({
     where: { payload: token },
     include: { user: true },
   });
 
   if (!exists) {
-    return res.status(404).json({ ok: false });
+    return res.status(404).json({ ok: false, error: "Invailed Token." });
   } else {
     req.session.user = {
       id: exists.userId,
@@ -21,4 +20,6 @@ const handler: NextApiHandler<IResponseProps> = async (req, res) => {
   }
 };
 
-export default withApiSession(withHandler("POST", handler));
+export default withApiSession(
+  withHandler({ method: "POST", handler, isPrivate: false })
+);

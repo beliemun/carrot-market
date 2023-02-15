@@ -20,6 +20,7 @@ interface ITokenFormProps {
 
 interface IMutationResult {
   ok: boolean;
+  error?: string;
 }
 
 const Enter: NextPage = () => {
@@ -44,10 +45,11 @@ const Enter: NextPage = () => {
   const router = useRouter();
   useEffect(() => {
     if (tokenData === undefined) return;
-    if (tokenData.ok) {
+    const { ok, error } = tokenData;
+    if (ok) {
       router.push("/");
     } else {
-      alert("Invailed Token.");
+      alert(error);
     }
   }, [tokenData]);
   return (
