@@ -3,7 +3,8 @@ import { GithubButton, TwiterButton } from "@components/enter";
 import { Input } from "@components/shared";
 import useMutation from "@libs/client/useMutation";
 import { NextPage } from "next";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 type LoginMethod = "email" | "phone";
@@ -40,7 +41,15 @@ const Enter: NextPage = () => {
   const onTokenValid = (formData: ITokenFormProps) => {
     confirm(formData);
   };
-  console.log(tokenData);
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData === undefined) return;
+    if (tokenData.ok) {
+      router.push("/");
+    } else {
+      alert("Invailed Token.");
+    }
+  }, [tokenData]);
   return (
     <div className="my-6">
       <h3 className="text-3xl font-bold text-center text-orange-400">

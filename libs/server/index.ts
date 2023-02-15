@@ -1,5 +1,6 @@
 import prisma from "./prisma";
 import twilio from "./twilio";
-import withHandler, { IResponseProps } from "./withHandler";
+import withHandler from "./withHandler";
+import { withApiSession } from "./withSession";
 
-export { prisma, twilio, withHandler, type IResponseProps };
+export { prisma, twilio, withHandler, withApiSession };
