@@ -1,6 +1,6 @@
 import { Layout } from "@components/shared";
 import { useMutation, useUser } from "@libs/client";
-import { MutationResult } from "@shared/types";
+import { ResponseType } from "@shared/types";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,7 +9,7 @@ import { useEffect } from "react";
 const Profile: NextPage = () => {
   const { user } = useUser();
   const router = useRouter();
-  const [mutate, { data }] = useMutation<MutationResult>("api/users/logout");
+  const [mutate, { data }] = useMutation<ResponseType>("api/users/logout");
   const handleLogout = () => mutate({});
   useEffect(() => {
     if (data?.ok) {

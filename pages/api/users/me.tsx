@@ -1,17 +1,12 @@
 import { prisma, withApiSession, withHandler } from "@libs/server";
-import { IResponse } from "@shared/types";
+import { ResponseType } from "@shared/types";
 import { NextApiHandler } from "next";
 
-const handler: NextApiHandler<IResponse> = async (req, res) => {
+const handler: NextApiHandler<ResponseType> = async (req, res) => {
   const user = await prisma.user.findUnique({
     where: { id: req.session.user?.id },
   });
   return res.json({ ok: true, user });
 };
 
-export default withApiSession(
-  withHandler({
-    method: "GET",
-    handler,
-  })
-);
+export default withApiSession(withHandler({ methods: ["GET"], handler }));

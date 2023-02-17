@@ -1,9 +1,5 @@
-export type MutationResult = {
+export interface ResponseType {
   ok: boolean;
   error?: string;
-};
-
-export interface IResponse {
-  ok: boolean;
   [key: string]: any;
 }

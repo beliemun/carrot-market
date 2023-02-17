@@ -3,6 +3,7 @@
 
 * {
   outline: none;
+  @apply scrollbar-hide;
 }
 
 .col-center {

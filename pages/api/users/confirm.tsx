@@ -1,8 +1,8 @@
 import { prisma, withApiSession, withHandler } from "@libs/server";
-import { IResponse } from "@shared/types";
+import { ResponseType } from "@shared/types";
 import { NextApiHandler } from "next";
 
-const handler: NextApiHandler<IResponse> = async (req, res) => {
+const handler: NextApiHandler<ResponseType> = async (req, res) => {
   const { token } = req.body;
   const existedToken = await prisma.token.findUnique({
     where: { payload: token },
@@ -23,5 +23,5 @@ const handler: NextApiHandler<IResponse> = async (req, res) => {
 };
 
 export default withApiSession(
-  withHandler({ method: "POST", handler, isPrivate: false })
+  withHandler({ methods: ["POST"], handler, isPrivate: false })
 );

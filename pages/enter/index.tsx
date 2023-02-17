@@ -1,9 +1,8 @@
 import { TabButton } from "@components/enter";
 import { GithubButton, TwiterButton } from "@components/enter";
 import { Input } from "@components/shared";
-import { useUser } from "@libs/client";
 import useMutation from "@libs/client/useMutation";
-import { MutationResult } from "@shared/types";
+import { ResponseType } from "@shared/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -11,32 +10,36 @@ import { useForm } from "react-hook-form";
 
 type LoginMethod = "email" | "phone";
 
-interface IEnterFormProps {
+interface EnterForm {
   email?: string;
   phone?: string;
 }
 
-interface ITokenFormProps {
+interface TokenForm {
   token: string;
 }
 
 const Enter: NextPage = () => {
   const [enter, { loading, data }] =
-    useMutation<MutationResult>("/api/users/enter");
+    useMutation<ResponseType>("/api/users/enter");
   const [confirm, { loading: tokenLoading, data: tokenData }] =
-    useMutation<MutationResult>("/api/users/confirm");
-  const { register, handleSubmit, reset } = useForm<IEnterFormProps>();
-  const { register: toeknRegister, handleSubmit: tokenHandleSubmit } =
-    useForm<ITokenFormProps>();
+    useMutation<ResponseType>("/api/users/confirm");
+  const {
+    register: enterRegister,
+    handleSubmit: enterSubmit,
+    reset,
+  } = useForm<EnterForm>();
+  const { register: toeknRegister, handleSubmit: tokenSubmit } =
+    useForm<TokenForm>();
   const [method, setMethod] = useState<LoginMethod>("email");
   const handleChangeTab = (type: LoginMethod) => {
     reset();
     setMethod(type);
   };
-  const onValid = (fromData: IEnterFormProps) => {
+  const onValid = (fromData: EnterForm) => {
     enter(fromData);
   };
-  const onTokenValid = (formData: ITokenFormProps) => {
+  const onTokenValid = (formData: TokenForm) => {
     confirm(formData);
   };
   const router = useRouter();
@@ -72,7 +75,7 @@ const Enter: NextPage = () => {
           </div>
         </div>
         {data?.ok ? (
-          <form className="p-4" onSubmit={tokenHandleSubmit(onTokenValid)}>
+          <form className="p-4" onSubmit={tokenSubmit(onTokenValid)}>
             <label className="text-sm">Comfirmation Token</label>
             <div className="mt-2">
               <Input
@@ -81,7 +84,7 @@ const Enter: NextPage = () => {
                 frame="text"
                 type="number"
                 required
-                onSubmit={tokenHandleSubmit(onTokenValid)}
+                onSubmit={tokenSubmit(onTokenValid)}
               />
             </div>
             <button className="button mt-4">
@@ -89,7 +92,7 @@ const Enter: NextPage = () => {
             </button>
           </form>
         ) : (
-          <form className="p-4" onSubmit={handleSubmit(onValid)}>
+          <form className="p-4" onSubmit={enterSubmit(onValid)}>
             <label className="text-sm">
               {method === "email" ? "Email address" : null}
               {method === "phone" ? "Phone number" : null}
@@ -98,21 +101,21 @@ const Enter: NextPage = () => {
               {method === "email" ? (
                 <Input
                   template="text"
-                  register={register("email")}
+                  register={enterRegister("email")}
                   type="email"
                   frame="text"
                   required
-                  onSubmit={handleSubmit(onValid)}
+                  onSubmit={enterSubmit(onValid)}
                 />
               ) : null}
               {method === "phone" ? (
                 <Input
                   template="phone"
-                  register={register("phone")}
+                  register={enterRegister("phone")}
                   type="number"
                   frame="price"
                   required
-                  onSubmit={handleSubmit(onValid)}
+                  onSubmit={enterSubmit(onValid)}
                 />
               ) : null}
             </div>

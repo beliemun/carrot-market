@@ -1,19 +1,21 @@
 import { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
 
-interface IWithHandlerConfigProps {
-  method: "GET" | "POST" | "DELETE";
+type Method = "GET" | "POST" | "DELETE";
+
+interface IWithHandlerConfig {
+  methods: Method[];
   handler: NextApiHandler;
   isPrivate?: boolean;
 }
 
 const withHandler = ({
-  method,
+  methods,
   handler,
   isPrivate = true,
-}: IWithHandlerConfigProps) => {
+}: IWithHandlerConfig) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method !== method) {
-      console.log("Status: 405");
+    if (req.method && !methods.includes(req.method as any)) {
+      console.log("Status: 405", !methods.includes(req.method as any));
       return res.status(405).end();
     }
     if (isPrivate && !req.session.user) {

@@ -16,12 +16,12 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  phone    String?    @unique
-  email    String?    @unique
+  phone    String?   @unique
+  email    String?   @unique
   name     String
   avatar   String?
   tokens   Token[]
-  products Products[]
+  products Product[]
 }
 
 model Token {
@@ -36,7 +36,7 @@ model Token {
   @@index([userId])
 }
 
-model Products {
+model Product {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

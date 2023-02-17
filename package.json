@@ -21,7 +21,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.1",
+    "react-loading-skeleton": "^3.1.1",
     "swr": "^2.0.3",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "twilio": "^4.7.2",
     "typescript": "4.9.5"
   },
