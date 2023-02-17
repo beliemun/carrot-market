@@ -1,7 +1,10 @@
 import { Layout } from "@components/shared";
+import { useUser } from "@libs/client";
 import { NextPage } from "next";
 
 const Chats: NextPage = () => {
+  const { user } = useUser();
+  console.log(user);
   return (
     <Layout title="Chats" canGoBack={true} hasTabBar={true}>
       <div className="divide-y">

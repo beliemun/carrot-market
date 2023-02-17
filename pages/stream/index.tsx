@@ -1,8 +1,11 @@
 import { Layout } from "@components/shared";
+import { useUser } from "@libs/client";
 import { NextPage } from "next";
 import Link from "next/link";
 
 const Stream: NextPage = () => {
+  const { user } = useUser();
+  console.log(user);
   return (
     <Layout title="Stream" canGoBack={true} hasTabBar={true}>
       <div>

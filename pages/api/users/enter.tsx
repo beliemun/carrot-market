@@ -1,11 +1,11 @@
 import { prisma, withApiSession, withHandler } from "@libs/server";
-import { IResponseProps } from "@shared/types";
+import { IResponse } from "@shared/types";
 import { NextApiHandler } from "next";
 import mail from "@sendgrid/mail";
 
 mail.setApiKey(process.env.SENDGRID_API!);
 
-const handler: NextApiHandler<IResponseProps> = async (req, res) => {
+const handler: NextApiHandler<IResponse> = async (req, res) => {
   const { email, phone } = req.body;
   if (!email && !phone) {
     return res.status(400).json({ ok: false });
@@ -45,7 +45,7 @@ const handler: NextApiHandler<IResponseProps> = async (req, res) => {
   //   });
   //   console.log(email);
   // }
-  res.status(200).json({ ok: true, email, phone });
+  return res.status(200).json({ ok: true });
 };
 
 export default withApiSession(

@@ -3,7 +3,7 @@ import { GithubButton, TwiterButton } from "@components/enter";
 import { Input } from "@components/shared";
 import { useUser } from "@libs/client";
 import useMutation from "@libs/client/useMutation";
-import { IResponseProps } from "@shared/types";
+import { MutationResult } from "@shared/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -21,10 +21,10 @@ interface ITokenFormProps {
 }
 
 const Enter: NextPage = () => {
-  const [enter, { loading, data, error }] =
-    useMutation<IResponseProps>("/api/users/enter");
+  const [enter, { loading, data }] =
+    useMutation<MutationResult>("/api/users/enter");
   const [confirm, { loading: tokenLoading, data: tokenData }] =
-    useMutation<IResponseProps>("/api/users/confirm");
+    useMutation<MutationResult>("/api/users/confirm");
   const { register, handleSubmit, reset } = useForm<IEnterFormProps>();
   const { register: toeknRegister, handleSubmit: tokenHandleSubmit } =
     useForm<ITokenFormProps>();

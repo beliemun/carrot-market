@@ -21,13 +21,16 @@ const Input = ({
   return (
     <div className={className}>
       {template === "text" ? (
-        <input
-          className="input"
-          type={type}
-          required={required}
-          {...register}
-          {...rest}
-        />
+        <div>
+          <label className="font-medium text-sm text-gray-400">{lable}</label>
+          <input
+            className="input"
+            type={type}
+            required={required}
+            {...register}
+            {...rest}
+          />
+        </div>
       ) : null}
       {template === "phone" ? (
         <div className="flex w-full">

@@ -1,32 +1,23 @@
 import { Layout } from "@components/shared";
 import { useMutation, useUser } from "@libs/client";
-import { IResponseProps } from "@shared/types";
+import { MutationResult } from "@shared/types";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const Profile: NextPage = () => {
+  const { user } = useUser();
   const router = useRouter();
-  const [mutate, { data }] = useMutation<IResponseProps>("api/users/logout");
+  const [mutate, { data }] = useMutation<MutationResult>("api/users/logout");
   const handleLogout = () => mutate({});
   useEffect(() => {
-    if (data && data.ok) {
+    if (data?.ok) {
       console.log(data);
       router.replace("/enter");
     }
   }, [data]);
-  // const handleLogout = () => {
-  //   fetch("api/users/logout")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       if (data.ok) {
-  //         console.log(data);
-  //         router.replace("/enter");
-  //       }
-  //     });
-  // };
-
+  console.log(user);
   return (
     <Layout title="Profile" hasTabBar={true}>
       <div>

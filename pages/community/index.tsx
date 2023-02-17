@@ -1,8 +1,11 @@
 import { Layout } from "@components/shared";
+import { useUser } from "@libs/client";
 import type { NextPage } from "next";
 import Link from "next/link";
 
 const Community: NextPage = () => {
+  const { user } = useUser();
+  console.log(user);
   return (
     <Layout title={"Community"} canGoBack hasTabBar={true}>
       <div>

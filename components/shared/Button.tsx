@@ -1,16 +1,16 @@
-import { FormEventHandler } from "react";
+import { MouseEventHandler } from "react";
 
 interface IButtonProps {
   className?: string;
-  onSubmit?: FormEventHandler<HTMLButtonElement> | undefined;
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
   label: string;
   [key: string]: any;
 }
 
-const Button = ({ className, onSubmit, label }: IButtonProps) => {
+const Button = ({ className, onClick, label }: IButtonProps) => {
   return (
     <div className={className}>
-      <button className="button mt-4" onSubmit={onSubmit}>
+      <button className="button mt-4" onClick={onClick}>
         {label}
       </button>
     </div>
