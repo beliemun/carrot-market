@@ -1,9 +1,10 @@
+import { LikeButton } from "@components/product";
 import { Layout } from "@components/shared";
+import { useMutation } from "@libs/client";
 import { Product, User } from "@prisma/client";
 import { ResponseType } from "@shared/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import useSWR from "swr";
 
 interface ProductWithUser extends Product {
@@ -13,6 +14,7 @@ interface ProductWithUser extends Product {
 interface ProductResult extends ResponseType {
   product: ProductWithUser;
   relatedProducts: Product[];
+  isLiked: boolean;
 }
 
 const Detail: NextPage = () => {
@@ -20,9 +22,13 @@ const Detail: NextPage = () => {
   const { data } = useSWR<ProductResult>(
     router.query.id ? `/api/products/${router.query.id}` : null
   );
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const [toggleLike, { loading }] = useMutation(
+    `/api/products/${router.query.id}/favorite`
+  );
+  const handleToggleLike = () => {
+    if (loading) return;
+    toggleLike({});
+  };
   return (
     <Layout title="Detail" canGoBack={true}>
       <div className="p-4">
@@ -43,23 +49,7 @@ const Detail: NextPage = () => {
             <p className="text-gray-600 mt-4">{data?.product.description}</p>
             <div className="flex justify-between mt-4 space-x-4">
               <button className="button">Talk to seller</button>
-              <button className="col-center rounded-full text-gray-400 hover:bg-red-400 hover:text-white t-300 p-4">
-                <svg
-                  className="h-6 w-6 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </button>
+              <LikeButton onClick={handleToggleLike} isLiked={data?.isLiked} />
             </div>
           </div>
         </div>

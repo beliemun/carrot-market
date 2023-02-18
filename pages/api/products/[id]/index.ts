@@ -1,8 +1,11 @@
-import { prisma } from "@libs/server";
+import { prisma, withApiSession, withHandler } from "@libs/server";
 import { NextApiHandler } from "next";
 
 const handler: NextApiHandler = async (req, res) => {
-  const { id } = req.query;
+  const {
+    query: { id },
+    session: { user },
+  } = req;
   if (id === undefined) return res.json({ ok: false, error: "Id not found." });
 
   const product = await prisma.product.findUnique({
@@ -12,15 +15,25 @@ const handler: NextApiHandler = async (req, res) => {
   const terms = product?.name
     .split(" ")
     .map((word) => ({ name: { contains: word } }));
-  console.log(terms);
   const relatedProducts = await prisma.product.findMany({
     where: {
       OR: terms,
       AND: [{ id: { not: product?.id } }],
     },
   });
-  console.log(relatedProducts);
-  return res.json({ ok: true, product, relatedProducts });
+  const favorite = await prisma.favorite.findFirst({
+    where: {
+      userId: user?.id,
+      productId: product?.id,
+    },
+    select: { id: true },
+  });
+  return res.json({
+    ok: true,
+    product,
+    isLiked: Boolean(favorite),
+    relatedProducts,
+  });
 };
 
-export default handler;
+export default withApiSession(withHandler({ methods: ["GET"], handler }));
