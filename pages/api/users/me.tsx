@@ -6,10 +6,7 @@ const handler: NextApiHandler<IResponseProps> = async (req, res) => {
   const user = await prisma.user.findUnique({
     where: { id: req.session.user?.id },
   });
-  return res.json({
-    ok: true,
-    user,
-  });
+  res.json({ ok: true, user });
 };
 
 export default withApiSession(

@@ -1,7 +1,9 @@
 import { TabButton } from "@components/enter";
 import { GithubButton, TwiterButton } from "@components/enter";
 import { Input } from "@components/shared";
+import { useUser } from "@libs/client";
 import useMutation from "@libs/client/useMutation";
+import { IResponseProps } from "@shared/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -18,16 +20,11 @@ interface ITokenFormProps {
   token: string;
 }
 
-interface IMutationResult {
-  ok: boolean;
-  error?: string;
-}
-
 const Enter: NextPage = () => {
   const [enter, { loading, data, error }] =
-    useMutation<IMutationResult>("/api/users/enter");
+    useMutation<IResponseProps>("/api/users/enter");
   const [confirm, { loading: tokenLoading, data: tokenData }] =
-    useMutation<IMutationResult>("/api/users/confirm");
+    useMutation<IResponseProps>("/api/users/confirm");
   const { register, handleSubmit, reset } = useForm<IEnterFormProps>();
   const { register: toeknRegister, handleSubmit: tokenHandleSubmit } =
     useForm<ITokenFormProps>();
@@ -51,7 +48,7 @@ const Enter: NextPage = () => {
     } else {
       alert(error);
     }
-  }, [tokenData]);
+  }, [tokenData, router]);
   return (
     <div className="my-6">
       <h3 className="text-3xl font-bold text-center text-orange-400">
@@ -79,6 +76,7 @@ const Enter: NextPage = () => {
             <label className="text-sm">Comfirmation Token</label>
             <div className="mt-2">
               <Input
+                template="text"
                 register={toeknRegister("token")}
                 frame="text"
                 type="number"
@@ -99,6 +97,7 @@ const Enter: NextPage = () => {
             <div className="mt-2">
               {method === "email" ? (
                 <Input
+                  template="text"
                   register={register("email")}
                   type="email"
                   frame="text"
@@ -108,6 +107,7 @@ const Enter: NextPage = () => {
               ) : null}
               {method === "phone" ? (
                 <Input
+                  template="phone"
                   register={register("phone")}
                   type="number"
                   frame="price"

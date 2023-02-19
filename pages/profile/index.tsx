@@ -1,8 +1,32 @@
 import { Layout } from "@components/shared";
+import { useMutation, useUser } from "@libs/client";
+import { IResponseProps } from "@shared/types";
 import { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Profile: NextPage = () => {
+  const router = useRouter();
+  const [mutate, { data }] = useMutation<IResponseProps>("api/users/logout");
+  const handleLogout = () => mutate({});
+  useEffect(() => {
+    if (data && data.ok) {
+      console.log(data);
+      router.replace("/enter");
+    }
+  }, [data]);
+  // const handleLogout = () => {
+  //   fetch("api/users/logout")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.ok) {
+  //         console.log(data);
+  //         router.replace("/enter");
+  //       }
+  //     });
+  // };
+
   return (
     <Layout title="Profile" hasTabBar={true}>
       <div>
@@ -142,6 +166,12 @@ const Profile: NextPage = () => {
             </p>
           </div>
         </div>
+        <h3
+          className="text-red-400 text-center cursor-pointer py-2"
+          onClick={handleLogout}
+        >
+          Logout
+        </h3>
       </div>
     </Layout>
   );

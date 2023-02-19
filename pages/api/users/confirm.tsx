@@ -8,9 +8,8 @@ const handler: NextApiHandler<IResponseProps> = async (req, res) => {
     where: { payload: token },
     include: { user: true },
   });
-
   if (!existedToken) {
-    return res.status(404).json({ ok: false, error: "Invailed Token." });
+    res.status(404).json({ ok: false, error: "Invailed Token." });
   } else {
     req.session.user = {
       id: existedToken.userId,
@@ -19,7 +18,7 @@ const handler: NextApiHandler<IResponseProps> = async (req, res) => {
     await prisma.token.deleteMany({
       where: { userId: existedToken.userId },
     });
-    return res.status(200).json({ ok: true });
+    res.status(200).json({ ok: true });
   }
 };
 

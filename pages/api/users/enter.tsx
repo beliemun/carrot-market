@@ -10,7 +10,7 @@ const handler: NextApiHandler<IResponseProps> = async (req, res) => {
   if (!email && !phone) {
     return res.status(400).json({ ok: false });
   }
-  const user = email ? { email } : { phone: +phone };
+  const user = email ? { email } : { phone };
   const payload = Math.floor(100000 + Math.random() * 900000) + "";
   const token = await prisma.token.create({
     data: {
@@ -45,7 +45,7 @@ const handler: NextApiHandler<IResponseProps> = async (req, res) => {
   //   });
   //   console.log(email);
   // }
-  return res.status(200).json({ ok: true, email, phone });
+  res.status(200).json({ ok: true, email, phone });
 };
 
 export default withApiSession(
