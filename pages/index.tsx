@@ -6,8 +6,14 @@ import { ResponseType } from "@shared/types";
 import type { NextPage } from "next";
 import useSWR from "swr";
 
+export interface ProductWithCount extends Product {
+  _count: {
+    favorites: number;
+  };
+}
+
 export interface ProductsResult extends ResponseType {
-  products: Product[];
+  products: ProductWithCount[];
 }
 
 const Home: NextPage = () => {
@@ -18,7 +24,11 @@ const Home: NextPage = () => {
     <Layout title="Home" hasTabBar={true}>
       <div className="flex flex-col divide-y">
         {data?.products?.map((product, i) => (
-          <ProductItem key={i} {...product} />
+          <ProductItem
+            key={i}
+            {...product}
+            likeCount={product._count.favorites}
+          />
         ))}
         <UploadButton url="/products/upload" type="Product" />
       </div>

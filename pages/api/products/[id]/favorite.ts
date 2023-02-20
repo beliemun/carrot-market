@@ -16,7 +16,6 @@ const handler: NextApiHandler = async (req, res) => {
     await prisma.favorite.delete({
       where: { id: favorite.id },
     });
-    console.log("Deleted");
   } else {
     await prisma.favorite.create({
       data: {
@@ -24,7 +23,6 @@ const handler: NextApiHandler = async (req, res) => {
         product: { connect: { id: Number(id) } },
       },
     });
-    console.log("Created");
   }
   return res.json({ ok: true });
 };

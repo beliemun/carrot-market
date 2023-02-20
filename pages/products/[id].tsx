@@ -5,10 +5,10 @@ import { Product, User } from "@prisma/client";
 import { ResponseType } from "@shared/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 
 interface ProductWithUser extends Product {
-  user: User;
+  user: User | undefined;
 }
 
 interface ProductResult extends ResponseType {
@@ -19,14 +19,17 @@ interface ProductResult extends ResponseType {
 
 const Detail: NextPage = () => {
   const router = useRouter();
-  const { data } = useSWR<ProductResult>(
+  // const { mutate: unboundMutate } = useSWRConfig();
+  const { data, mutate: boundMutate } = useSWR<ProductResult>(
     router.query.id ? `/api/products/${router.query.id}` : null
   );
   const [toggleLike, { loading }] = useMutation(
     `/api/products/${router.query.id}/favorite`
   );
   const handleToggleLike = () => {
-    if (loading) return;
+    if (loading || !data) return;
+    boundMutate({ ...data, isLiked: !data.isLiked }, false);
+    // unboundMutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
     toggleLike({});
   };
   return (
@@ -37,7 +40,7 @@ const Detail: NextPage = () => {
           <div className="flex flex-row items-center border-b border-gray-100 w-full mb-2 py-3 cursor-pointer">
             <div className="p-6 bg-gray-200 rounded-full mr-4" />
             <div className="w-full">
-              <p className="font-medium">{data?.product?.user.name}</p>
+              <p className="font-medium">{data?.product?.user?.name}</p>
               <p className="text-sm font-medium text-gray-400">
                 View profile &rarr;
               </p>

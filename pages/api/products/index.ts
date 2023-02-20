@@ -12,6 +12,13 @@ const handler: NextApiHandler<ResponseType> = async (req, res) => {
     const products = await prisma.product.findMany({
       where: {},
       orderBy: { updatedAt: "desc" },
+      include: {
+        _count: {
+          select: {
+            favorites: true,
+          },
+        },
+      },
     });
     return res.status(200).json({ ok: true, products });
   }
