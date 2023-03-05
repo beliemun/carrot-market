@@ -28,7 +28,7 @@ const Detail: NextPage = () => {
   );
   const handleToggleLike = () => {
     if (loading || !data) return;
-    boundMutate({ ...data, isLiked: !data.isLiked }, false);
+    boundMutate({ ...data, isLiked: !data.isLiked });
     // unboundMutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
     toggleLike({});
   };
