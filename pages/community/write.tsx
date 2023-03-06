@@ -30,8 +30,8 @@ const Write: NextPage = () => {
   }, [data]);
   return (
     <Layout title="Write" canGoBack={true}>
-      <form className="p-4" onSubmit={handleSubmit(onValid)} {...register("question")}>
-        <textarea className="input" />
+      <form className="p-4" onSubmit={handleSubmit(onValid)}>
+        <textarea className="input" {...register("question")} />
         <button className="button mt-2">{loading ? "Loading" : "Submit"}</button>
       </form>
     </Layout>
