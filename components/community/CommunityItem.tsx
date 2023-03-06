@@ -1,13 +1,10 @@
 const CommunityItem = () => {
   return (
     <div>
-      <div className="flex flex-col items-start p-4 border-b border-gray-100">
-        <span className="flex text-xs px-2 py-1 bg-gray-100 rounded-full">
-          동네질문
-        </span>
+      <div className="flex flex-col items-start p-4 border-b border-gray-200">
+        <span className="flex text-xs px-2 py-1 bg-gray-100 rounded-full">동네질문</span>
         <div className="mt-2">
-          <span className="text-orange-400">Q.</span> What is the best mandu
-          restaurant?
+          <span className="text-orange-400">Q.</span> What is the best mandu restaurant?
         </div>
         <div className="flex justify-between w-full text-sm text-gray-400 my-2">
           <span>니꼬</span>
