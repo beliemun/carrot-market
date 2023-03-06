@@ -5,7 +5,7 @@ import answer from "./[id]/answer";
 
 const handler: NextApiHandler<ResponseType> = async (req, res) => {
   const {
-    body: { question },
+    body: { question, latitude, longitude },
     session: { user },
     method,
   } = req;
@@ -26,6 +26,8 @@ const handler: NextApiHandler<ResponseType> = async (req, res) => {
     const post = await prisma.post.create({
       data: {
         question,
+        latitude,
+        longitude,
         user: { connect: { id: user?.id } },
       },
     });

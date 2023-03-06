@@ -1,4 +1,5 @@
 import moment from "moment";
+import "moment/locale/ko";
 import Link from "next/link";
 import { PostWithCount } from "pages/community";
 
@@ -17,7 +18,7 @@ const CommunityItem = ({ post }: ICommunityItem) => {
         </div>
         <div className="flex justify-between w-full text-sm text-gray-400 my-2">
           <span>{post?.user?.name}</span>
-          <span>{post.createdAt.toString()}</span>
+          <span>{moment(post.createdAt).format("LLL")}</span>
         </div>
         <div className="flex space-x-4 mt-2">
           <span className="row-center space-x-1 px-2 py-1 rounded-full cursor-pointer t-300">
