@@ -1,41 +1,46 @@
 import { Layout } from "@components/shared";
 import { useMutation, useUser } from "@libs/client";
+import { Review, User } from "@prisma/client";
 import { ResponseType } from "@shared/types";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import useSWR from "swr";
+
+interface ReviewWithUser extends Review {
+  createdFor: User;
+}
+
+interface ReviewResult extends ResponseType {
+  reviews: ReviewWithUser[];
+}
 
 const Profile: NextPage = () => {
   const { user } = useUser();
   const router = useRouter();
-  const [mutate, { data }] = useMutation<ResponseType>("api/users/logout");
+  const { data: reviewData } = useSWR<ReviewResult>(`/api/reviews`);
+  const [mutate, { data: logoutData }] = useMutation<ResponseType>("api/users/logout");
   const handleLogout = () => mutate({});
   useEffect(() => {
-    if (data?.ok) {
-      console.log(data);
+    if (logoutData?.ok) {
+      console.log(logoutData);
       router.replace("/enter");
     }
-  }, [data]);
-  console.log(user);
+  }, [logoutData]);
   return (
     <Layout title="Profile" hasTabBar={true}>
       <div>
         <div className="flex flex-row items-center px-4 w-full py-3 cursor-pointer">
           <div className="w-10 h-10 bg-gray-200 rounded-full mr-4" />
           <div>
-            <p className="font-medium">Steve Jebs</p>
-            <p className="text-sm font-medium text-gray-400">
-              Edit profile &rarr;
-            </p>
+            <p className="font-medium">{user?.name}</p>
+            <p className="text-sm font-medium text-gray-400">Edit profile &rarr;</p>
           </div>
         </div>
         <div className="flex justify-around py-2">
           <div className="col-center  my-4">
-            <Link
-              href={"/profile/soldout"}
-              className="w-14 h-14 col-center bg-orange-400 rounded-full text-white"
-            >
+            <Link href={"/profile/soldout"} className="w-14 h-14 col-center bg-orange-400 rounded-full text-white">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -92,75 +97,40 @@ const Profile: NextPage = () => {
             <span className="text-sm mt-2">관심 목록</span>
           </Link>
         </div>
-        <div className="px-4">
-          <div className="flex flex-row space-x-2 my-2">
-            <div className="w-6 h-6 bg-gray-200 rounded-full" />
-            <div className="flex items-center ">
-              <h4 className="">니꼬</h4>
-              <div className="flex flex-row">
-                <svg
-                  className="text-yellow-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <svg
-                  className="text-yellow-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <svg
-                  className="text-yellow-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <svg
-                  className="text-yellow-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <svg
-                  className="text-gray-400 h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
+        {reviewData?.reviews.map((review, index) => (
+          <div className="px-4" key={index}>
+            <div className="flex flex-row space-x-2 my-2">
+              <div className="w-6 h-6 bg-gray-200 rounded-full" />
+              <div className="flex items-center ">
+                <h4 className="">{review.createdFor.name}</h4>
+                <div className="flex flex-row">
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      className={`${review.score > index ? "text-yellow-400" : "text-gray-400"} h-5 w-5`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
               </div>
             </div>
+            <div>
+              <p>
+                Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while
+                I&apos;m in a transitional period so I don&apos;t wanna kill you, I wanna help you. But I can&apos;t
+                give you this case, it don&apos;t belong to me. Besides, I&apos;ve already been through too much shit
+                this morning over this case to hand it over to your dumb ass.
+              </p>
+            </div>
           </div>
-          <div>
-            <p>
-              Normally, both your asses would be dead as fucking fried chicken,
-              but you happen to pull this shit while I&apos;m in a transitional
-              period so I don&apos;t wanna kill you, I wanna help you. But I
-              can&apos;t give you this case, it don&apos;t belong to me.
-              Besides, I&apos;ve already been through too much shit this morning
-              over this case to hand it over to your dumb ass.
-            </p>
-          </div>
-        </div>
-        <h3
-          className="text-red-400 text-center cursor-pointer py-2"
-          onClick={handleLogout}
-        >
+        ))}
+
+        <h3 className="text-red-400 text-center cursor-pointer py-2" onClick={handleLogout}>
           Logout
         </h3>
       </div>

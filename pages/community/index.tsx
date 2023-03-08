@@ -1,6 +1,7 @@
 import { CommunityItem } from "@components/community";
 import { Layout, UploadButton } from "@components/shared";
 import { useUser } from "@libs/client";
+import useCoords from "@libs/client/useCoords";
 import { Post, User } from "@prisma/client";
 import type { NextPage } from "next";
 import useSWR from "swr";
@@ -23,7 +24,10 @@ interface PostsResponse {
 
 const Community: NextPage = () => {
   const { user } = useUser();
-  const { data } = useSWR<PostsResponse>(`/api/posts`);
+  const { latitude, longitude } = useCoords();
+  const { data } = useSWR<PostsResponse>(
+    latitude && longitude ? `/api/posts?latitude=${latitude}&longitude=${longitude}` : null
+  );
   return (
     <Layout title={"Community"} hasTabBar={true}>
       {data?.posts.map((post, i) => (

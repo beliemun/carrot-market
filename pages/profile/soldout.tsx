@@ -1,11 +1,30 @@
+import { ProductItem } from "@components/home";
 import { Layout } from "@components/shared";
+import { Favorite, Product } from "@prisma/client";
+import { ResponseType } from "@shared/types";
 import { NextPage } from "next";
+import useSWR from "swr";
+
+interface ProductWithCount {
+  _count: {
+    favorites: number;
+  };
+}
+
+interface FavoriteWithProduct extends Favorite {
+  product: ProductWithCount;
+}
+
+interface FavoriteResult extends ResponseType {
+  favorites: FavoriteWithProduct[];
+}
 
 const SoldOut: NextPage = () => {
+  const { data } = useSWR<FavoriteResult>(`/api/users/me/sale`);
   return (
     <Layout title={"Sold Out"} canGoBack={true}>
       <div className="flex flex-col divide-y">
-        {[...Array(10)].map((_, i) => (
+        {/* {[...Array(10)].map((_, i) => (
           <div key={i} className="flex  p-4 cursor-pointer">
             <div className="flex w-full items-center space-x-4">
               <div className="w-20 h-20 bg-gray-200 rounded-md" />
@@ -52,7 +71,9 @@ const SoldOut: NextPage = () => {
               </div>
             </div>
           </div>
-        ))}
+          <ProductItem key={i} {} />
+        ))} */}
+        {/* {data?.favorite.map((favorite, index) => <ProductItem {...favorite} />)} */}
       </div>
     </Layout>
   );
