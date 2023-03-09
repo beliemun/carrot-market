@@ -27,9 +27,6 @@ const handler: NextApiHandler<ResponseType> = async (req, res) => {
       },
     },
   });
-  records.map((record) => {
-    console.log(record.id, record.product._count);
-  });
   return res.json({ ok: true, records });
 };
 

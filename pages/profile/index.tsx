@@ -24,7 +24,6 @@ const Profile: NextPage = () => {
   const handleLogout = () => mutate({});
   useEffect(() => {
     if (logoutData?.ok) {
-      console.log(logoutData);
       router.replace("/enter");
     }
   }, [logoutData]);

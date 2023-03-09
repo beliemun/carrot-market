@@ -7,7 +7,6 @@ import useSWR from "swr";
 
 const Sale: NextPage = () => {
   const { data } = useSWR<RecordResult>(`/api/users/me/sale`);
-  console.log(data);
   return (
     <Layout title={"판매 내역"} canGoBack={true}>
       <div className="flex flex-col divide-y">

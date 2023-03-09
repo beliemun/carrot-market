@@ -19,7 +19,6 @@ export interface ProductsResult extends ResponseType {
 const Home: NextPage = () => {
   const { user } = useUser();
   const { data } = useSWR<ProductsResult>("/api/products");
-  console.log("data:", data);
   return (
     <Layout title="Home" hasTabBar={true}>
       <div className="flex flex-col divide-y">

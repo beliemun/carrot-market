@@ -2,7 +2,6 @@ import { Product } from "@prisma/client";
 import Link from "next/link";
 
 const RecordItem = ({ id, name, price, description, likeCount }: Product & { likeCount: number }) => {
-  console.log(id, likeCount);
   return (
     <Link className="flex p-4 cursor-pointer" href={`/products/${id}`}>
       <div className="flex w-full items-center space-x-4">

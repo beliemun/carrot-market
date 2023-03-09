@@ -5,7 +5,6 @@ import Link from "next/link";
 
 const Stream: NextPage = () => {
   const { user } = useUser();
-  console.log(user);
   return (
     <Layout title="Stream" canGoBack={true} hasTabBar={true}>
       <div>
