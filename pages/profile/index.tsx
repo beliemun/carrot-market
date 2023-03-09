@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import useSWR from "swr";
 
 interface ReviewWithUser extends Review {
-  createdFor: User;
+  createdBy: User;
 }
 
 interface ReviewResult extends ResponseType {
@@ -28,18 +28,23 @@ const Profile: NextPage = () => {
     }
   }, [logoutData]);
   return (
-    <Layout title="Profile" hasTabBar={true}>
+    <Layout title="프로필" hasTabBar={true}>
       <div>
         <div className="flex flex-row items-center px-4 w-full py-3 cursor-pointer">
           <div className="w-10 h-10 bg-gray-200 rounded-full mr-4" />
           <div>
             <p className="font-medium">{user?.name}</p>
-            <p className="text-sm font-medium text-gray-400">Edit profile &rarr;</p>
+            <Link href={"/profile/edit"}>
+              <p className="text-sm font-medium text-gray-400">Edit profile &rarr;</p>
+            </Link>
           </div>
         </div>
         <div className="flex justify-around py-2">
           <div className="col-center  my-4">
-            <Link href={"/profile/sale"} className="w-14 h-14 col-center bg-orange-400 rounded-full text-white">
+            <Link
+              href={"/profile/sale"}
+              className="w-14 h-14 col-center bg-orange-400 rounded-full text-white"
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -101,7 +106,7 @@ const Profile: NextPage = () => {
             <div className="flex flex-row space-x-2 my-2">
               <div className="w-6 h-6 bg-gray-200 rounded-full" />
               <div className="flex items-center ">
-                <h4 className="">{review.createdFor.name}</h4>
+                <h4 className="">{review.createdBy.name}</h4>
                 <div className="flex flex-row">
                   {[...Array(5)].map((_, index) => (
                     <svg
