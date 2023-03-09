@@ -8,7 +8,7 @@ import useSWR from "swr";
 
 export interface ProductWithCount extends Product {
   _count: {
-    favorites: number;
+    records: number;
   };
 }
 
@@ -24,11 +24,7 @@ const Home: NextPage = () => {
     <Layout title="Home" hasTabBar={true}>
       <div className="flex flex-col divide-y">
         {data?.products?.map((product, i) => (
-          <ProductItem
-            key={i}
-            {...product}
-            likeCount={product._count.favorites}
-          />
+          <ProductItem key={i} {...product} likeCount={product._count.records} />
         ))}
         <UploadButton url="/products/upload" type="Product" />
       </div>

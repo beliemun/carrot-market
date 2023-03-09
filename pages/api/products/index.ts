@@ -10,12 +10,20 @@ const handler: NextApiHandler<ResponseType> = async (req, res) => {
   } = req;
   if (method === "GET") {
     const products = await prisma.product.findMany({
-      where: {},
+      where: {
+        records: {
+          some: { type: "Sale" },
+        },
+      },
       orderBy: { updatedAt: "desc" },
       include: {
         _count: {
           select: {
-            favorites: true,
+            records: {
+              where: {
+                type: "Favorite",
+              },
+            },
           },
         },
       },
@@ -36,6 +44,4 @@ const handler: NextApiHandler<ResponseType> = async (req, res) => {
   }
 };
 
-export default withApiSession(
-  withHandler({ methods: ["GET", "POST"], handler })
-);
+export default withApiSession(withHandler({ methods: ["GET", "POST"], handler }));

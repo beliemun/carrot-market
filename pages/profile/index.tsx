@@ -40,7 +40,7 @@ const Profile: NextPage = () => {
         </div>
         <div className="flex justify-around py-2">
           <div className="col-center  my-4">
-            <Link href={"/profile/soldout"} className="w-14 h-14 col-center bg-orange-400 rounded-full text-white">
+            <Link href={"/profile/sale"} className="w-14 h-14 col-center bg-orange-400 rounded-full text-white">
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -58,7 +58,7 @@ const Profile: NextPage = () => {
             </Link>
             <span className="text-sm mt-2">판매 내역</span>
           </div>
-          <Link href={"/profile/purchased"} className="col-center  my-4">
+          <Link href={"/profile/purchase"} className="col-center  my-4">
             <div className="w-14 h-14 col-center bg-orange-400 rounded-full text-white">
               <svg
                 className="w-6 h-6"
@@ -77,7 +77,7 @@ const Profile: NextPage = () => {
             </div>
             <span className="text-sm mt-2">구매 내역</span>
           </Link>
-          <Link href={"/profile/interested"} className="col-center  my-4">
+          <Link href={"/profile/favorite"} className="col-center  my-4">
             <div className="w-14 h-14 col-center bg-orange-400 rounded-full text-white">
               <svg
                 className="w-6 h-6"
@@ -120,12 +120,7 @@ const Profile: NextPage = () => {
               </div>
             </div>
             <div>
-              <p>
-                Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while
-                I&apos;m in a transitional period so I don&apos;t wanna kill you, I wanna help you. But I can&apos;t
-                give you this case, it don&apos;t belong to me. Besides, I&apos;ve already been through too much shit
-                this morning over this case to hand it over to your dumb ass.
-              </p>
+              <p>{review.text}</p>
             </div>
           </div>
         ))}

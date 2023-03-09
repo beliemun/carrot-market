@@ -5,7 +5,7 @@ import { Product, User } from "@prisma/client";
 import { ResponseType } from "@shared/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 
 interface ProductWithUser extends Product {
   user: User | undefined;
@@ -26,9 +26,9 @@ const Detail: NextPage = () => {
   const [toggleLike, { loading }] = useMutation(`/api/products/${router.query.id}/favorite`);
   const handleToggleLike = () => {
     if (loading || !data) return;
-    boundMutate({ ...data, isLiked: !data.isLiked });
-    // unboundMutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
     toggleLike({});
+    boundMutate({ ...data, isLiked: !data.isLiked }, false);
+    // unboundMutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
   };
   return (
     <Layout title="Detail" canGoBack={true}>

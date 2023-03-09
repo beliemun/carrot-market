@@ -12,19 +12,18 @@ const handler: NextApiHandler = async (req, res) => {
     where: { id: Number(id) },
     include: { user: true },
   });
-  const terms = product?.name
-    .split(" ")
-    .map((word) => ({ name: { contains: word } }));
+  const terms = product?.name.split(" ").map((word) => ({ name: { contains: word } }));
   const relatedProducts = await prisma.product.findMany({
     where: {
       OR: terms,
       AND: [{ id: { not: product?.id } }],
     },
   });
-  const favorite = await prisma.favorite.findFirst({
+  const favorite = await prisma.record.findFirst({
     where: {
       userId: user?.id,
       productId: product?.id,
+      type: "Favorite",
     },
     select: { id: true },
   });

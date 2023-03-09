@@ -6,23 +6,28 @@ const handler: NextApiHandler<ResponseType> = async (req, res) => {
   const {
     session: { user },
   } = req;
-  const purchases = await prisma.purchase.findMany({
+  const records = await prisma.record.findMany({
     where: {
       userId: user?.id,
+      type: "Purchase",
     },
     include: {
       product: {
         include: {
           _count: {
             select: {
-              favorites: true,
+              records: {
+                where: {
+                  type: "Favorite",
+                },
+              },
             },
           },
         },
       },
     },
   });
-  return res.json({ ok: true, purchases });
+  return res.json({ ok: true, records });
 };
 
 export default withApiSession(withHandler({ methods: ["GET"], handler }));

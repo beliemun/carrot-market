@@ -6,21 +6,23 @@ const handler: NextApiHandler = async (req, res) => {
     query: { id },
     session: { user },
   } = req;
-  const favorite = await prisma.favorite.findFirst({
+  const records = await prisma.record.findFirst({
     where: {
       userId: user?.id,
       productId: Number(id),
+      type: "Favorite",
     },
   });
-  if (favorite) {
-    await prisma.favorite.delete({
-      where: { id: favorite.id },
+  if (records) {
+    await prisma.record.delete({
+      where: { id: records.id },
     });
   } else {
-    await prisma.favorite.create({
+    await prisma.record.create({
       data: {
         user: { connect: { id: user?.id } },
         product: { connect: { id: Number(id) } },
+        type: "Favorite",
       },
     });
   }

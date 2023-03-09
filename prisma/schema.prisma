@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["filteredRelationCount"]
 }
 
 datasource db {
@@ -22,14 +23,12 @@ model User {
   avatar          String?
   tokens          Token[]
   products        Product[]
-  favorites       Favorite[]
   posts           Post[]
   answers         Answer[]
   interests       Interest[]
   writtenReviews  Review[]   @relation("writtenReviews")
   receivedReviews Review[]   @relation("receivedReviews")
-  sales           Sale[]
-  purchases       Purchase[]
+  records         Record[]
 }
 
 model Token {
@@ -49,15 +48,13 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   image       String
   name        String
   price       Int
-  description String     @db.MediumText
-  favorites   Favorite[]
-  sales       Sale[]
-  purchases   Purchase[]
+  description String   @db.MediumText
+  records     Record[]
 
   @@index([userId])
 }
@@ -94,6 +91,22 @@ model Answer {
   @@index([postId])
 }
 
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy    User    @relation("writtenReviews", fields: [createdById], references: [id])
+  createdById  Int
+  createdFor   User    @relation("receivedReviews", fields: [createdForId], references: [id])
+  createdForId Int
+  score        Int     @default(0)
+  text         String? @db.MediumText
+
+  @@index([createdById])
+  @@index([createdForId])
+}
+
 model Interest {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -101,7 +114,6 @@ model Interest {
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
-
   post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId Int
 
@@ -109,59 +121,23 @@ model Interest {
   @@index([postId])
 }
 
-model Review {
+model Record {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  createdBy    User @relation("writtenReviews", fields: [createdById], references: [id])
-  createdById  Int
-  createdFor   User @relation("receivedReviews", fields: [createdForId], references: [id])
-  createdForId Int
-  score        Int  @default(0)
-
-  @@index([createdById])
-  @@index([createdForId])
-}
-
-model Sale {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  type      RecordType
+  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
 
   @@index([userId])
   @@index([productId])
 }
 
-model Purchase {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int
-
-  @@index([userId])
-  @@index([productId])
-}
-
-model Favorite {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int
-
-  @@index([userId])
-  @@index([productId])
+enum RecordType {
+  Sale
+  Purchase
+  Favorite
 }
