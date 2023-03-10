@@ -11,13 +11,7 @@ interface ILayoutProps {
   children: React.ReactNode;
 }
 
-const Layout = ({
-  className,
-  title,
-  canGoBack,
-  hasTabBar,
-  children,
-}: ILayoutProps) => {
+const Layout = ({ className, title, canGoBack, hasTabBar, children }: ILayoutProps) => {
   const router = useRouter();
   const handleGoback = () => router.back();
   return (
@@ -30,11 +24,7 @@ const Layout = ({
                 &larr;
               </button>
             ) : null}
-            {title ? (
-              <span className="flex-1 text-center font-medium text-orange-400 ">
-                {title}
-              </span>
-            ) : null}
+            {title ? <span className="flex-1 text-center font-medium text-orange-400 ">{title}</span> : null}
             {canGoBack ? <div className="w-10 h-10 flex items-end" /> : null}
           </div>
         </div>
@@ -89,7 +79,7 @@ const Layout = ({
                 />
               </svg>
             </Link>
-            <Link className="" href={"/stream"}>
+            <Link className="" href={"/streams"}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
