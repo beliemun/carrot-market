@@ -29,7 +29,6 @@ const StreamDetail: NextPage = () => {
       {data && data.ok ? (
         <div>
           <StreamItem className={`p-4`} stream={data.stream} />
-
           <div className="pt-4 px-4 pb-20 space-y-4">
             <MessageItem text="Hi nice to meet you! how much are you selling them for?" />
             <MessageItem text="I want ￦20,000" reverse />
