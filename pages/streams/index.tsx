@@ -1,4 +1,5 @@
 import { Layout, UploadButton } from "@components/shared";
+import ArrowButton from "@components/shared/ArrowButton";
 import { StreamItem } from "@components/streams";
 import { useUser } from "@libs/client";
 import { Stream } from "@prisma/client";
@@ -14,8 +15,15 @@ interface StreamResult extends ResponseType {
 const Stream: NextPage = () => {
   const { user } = useUser();
   const { data } = useSWR<StreamResult>("/api/streams");
+  const handleClick = (direction: "PREV" | "NEXT") => {
+    console.log("clicked", direction);
+  };
   return (
     <Layout title="Streams" hasTabBar={true}>
+      <div className={`flex justify-between pt-4 px-4`}>
+        <ArrowButton type="PREV" onClick={() => handleClick("PREV")} />
+        <ArrowButton type="NEXT" onClick={() => handleClick("NEXT")} />
+      </div>
       <div>
         <div className="divide-y">
           {data?.streams.map((stream, index) => (
