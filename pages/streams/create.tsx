@@ -22,13 +22,11 @@ const Create: NextPage = () => {
   const { register, handleSubmit } = useForm<UploadForm>();
   const onValid = (data: UploadForm) => {
     if (loading) return;
-    console.log(data);
     createStream(data);
   };
   const router = useRouter();
   useEffect(() => {
     if (data && data.ok) {
-      console.log("ok");
       router.push(`/streams/${data.stream.id}`);
     }
   }, [data]);
