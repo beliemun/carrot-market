@@ -4,11 +4,15 @@ import { NextApiHandler } from "next";
 
 const handler: NextApiHandler<ResponseType> = async (req, res) => {
   if (req.method === "GET") {
-    // const { query:{ }, } = req;
+    const {
+      query: { skip, take },
+    } = req;
+    const totalPage = ((await prisma.stream.count()) / Number(take)).toFixed(0);
     const streams = await prisma.stream.findMany({
-      take: 0,
+      skip: Number(skip),
+      take: Number(take),
     });
-    return res.json({ ok: true, streams });
+    return res.json({ ok: true, streams, totalPage });
   }
   if (req.method === "POST") {
     const {

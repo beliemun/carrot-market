@@ -7,8 +7,8 @@ interface IArrowButton {
 
 const ArrowButton = ({ className, type, onClick, rest }: IArrowButton) => {
   return (
-    <div className={"items-center"}>
-      <button onClick={onClick} {...rest}>
+    <div className={className}>
+      <div className={`cursor-pointer p-1`} onClick={onClick}>
         {type === "PREV" ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@ const ArrowButton = ({ className, type, onClick, rest }: IArrowButton) => {
             />
           </svg>
         ) : null}
-      </button>
+      </div>
     </div>
   );
 };
