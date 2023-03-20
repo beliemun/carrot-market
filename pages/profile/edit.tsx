@@ -37,14 +37,24 @@ const EditProfile = () => {
       router.replace("/profile");
     }
   }, [data]);
-  const onValid = (form: EditProfileForm) => {
+  const onValid = async (form: EditProfileForm) => {
     if (loading) return;
     const { name, email, phone } = form;
     if (name === "" && email === "" && phone === "") {
       setError("error", { message: "Name or Email or Phone number are required." });
+      return;
+    }
+
+    if (avatar && avatar.length > 0 && user) {
+      const { id, uploadURL } = await (await fetch(`/api/files`, { method: "POST" })).json();
+
+      // 특이사항: CF에 FormData 형식의 데이터가 전달되어야 함.
+      const form = new FormData();
+      form.append("file", avatar[0], user.id + "");
+      await fetch(uploadURL, { method: "POST", body: form });
+      // editProfile({...form, avatarUrl});
     } else {
       // editProfile(form);
-      console.log(form);
     }
   };
   const fileRef = useRef<string | null>(null);
