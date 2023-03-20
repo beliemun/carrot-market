@@ -1,13 +1,14 @@
 import { Layout } from "@components/shared";
 import { useMutation, useUser } from "@libs/client";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface EditProfileForm {
   name?: string;
   email?: string;
   phone?: string;
+  avatar?: string;
   error: String;
 }
 
@@ -23,6 +24,7 @@ const EditProfile = () => {
     handleSubmit,
     setError,
     clearErrors,
+    watch,
     formState: { errors },
   } = useForm<EditProfileForm>();
   const [editProfile, { data, loading }] = useMutation<EditProfileResponse>(`/api/users/me`);
@@ -41,20 +43,38 @@ const EditProfile = () => {
     if (name === "" && email === "" && phone === "") {
       setError("error", { message: "Name or Email or Phone number are required." });
     } else {
-      editProfile(form);
+      // editProfile(form);
+      console.log(form);
     }
   };
+  const fileRef = useRef<string | null>(null);
+  const avatar = watch("avatar");
+  const [avatarPreview, setAvatarPreview] = useState<string>();
+  useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      fileRef.current = avatar[0];
+      setAvatarPreview(URL.createObjectURL(fileRef.current as any));
+    }
+  }, [avatar]);
+  useEffect(() => {
+    return () => {
+      if (fileRef.current) {
+        console.log("clear");
+        URL.revokeObjectURL(fileRef.current as any);
+      }
+    };
+  }, []);
   return user ? (
     <Layout title={"프로필 수정"} canGoBack={true}>
       <form className="p-4" onSubmit={handleSubmit(onValid)}>
         <div className="flex items-center space-x-4">
-          <div className="w-14 h-14 rounded-full bg-gray-200" />
+          <img src={avatarPreview} className="w-14 h-14 rounded-full bg-gray-200" />
           <label
             htmlFor="avatar"
             className="cursor-pointer px-3 py-2 border border-gray-200 rounded-md hover:bg-orange-400 hover:text-white t-300"
           >
             Change Avatar
-            <input id="avatar" className="hidden" type="file" />
+            <input id="avatar" className="hidden" type="file" {...register("avatar")} />
           </label>
         </div>
         <div className="space-y-1 mt-2">
