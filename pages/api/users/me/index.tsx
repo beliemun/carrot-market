@@ -11,17 +11,17 @@ const handler: NextApiHandler<ResponseType> = async (req, res) => {
   }
   if (req.method === "POST") {
     const {
-      body: { name, email, phone },
+      body: { name, email, phone, avatarId },
       session: { user },
     } = req;
     if (name) {
-      await client?.user.update({
+      await prisma.user.update({
         where: { id: user?.id },
         data: { name },
       });
     }
     if (email) {
-      const exists = await client?.user.findUnique({
+      const exists = await prisma.user.findUnique({
         where: { email },
         select: {
           id: true,
@@ -33,14 +33,14 @@ const handler: NextApiHandler<ResponseType> = async (req, res) => {
           error: "Email already taken.",
         });
       } else {
-        await client?.user.update({
+        await prisma.user.update({
           where: { id: user?.id },
           data: { email },
         });
       }
     }
     if (phone) {
-      const exists = await client?.user.findUnique({
+      const exists = await prisma.user.findUnique({
         where: { phone },
         select: {
           id: true,
@@ -52,11 +52,17 @@ const handler: NextApiHandler<ResponseType> = async (req, res) => {
           error: "Phone number already taken.",
         });
       } else {
-        await client?.user.update({
+        await prisma.user.update({
           where: { id: user?.id },
           data: { phone },
         });
       }
+    }
+    if (avatarId) {
+      await prisma.user.update({
+        where: { id: user?.id },
+        data: { avatar: avatarId },
+      });
     }
     return res.json({ ok: true });
   }

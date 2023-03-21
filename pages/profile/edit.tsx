@@ -1,5 +1,6 @@
 import { Layout } from "@components/shared";
 import { useMutation, useUser } from "@libs/client";
+import { getDeliveryUrl } from "@libs/client/utils";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -46,15 +47,16 @@ const EditProfile = () => {
     }
 
     if (avatar && avatar.length > 0 && user) {
-      const { id, uploadURL } = await (await fetch(`/api/files`, { method: "POST" })).json();
-
+      const { uploadURL } = await (await fetch(`/api/files`, { method: "POST" })).json();
       // 특이사항: CF에 FormData 형식의 데이터가 전달되어야 함.
-      const form = new FormData();
-      form.append("file", avatar[0], user.id + "");
-      await fetch(uploadURL, { method: "POST", body: form });
-      // editProfile({...form, avatarUrl});
+      const data = new FormData();
+      data.append("file", avatar[0], user.id + "");
+      const {
+        result: { id },
+      } = await (await fetch(uploadURL, { method: "POST", body: data })).json();
+      editProfile({ ...form, avatarId: id });
     } else {
-      // editProfile(form);
+      editProfile(form);
     }
   };
   const fileRef = useRef<string | null>(null);
@@ -67,9 +69,13 @@ const EditProfile = () => {
     }
   }, [avatar]);
   useEffect(() => {
+    if (user?.avatar) {
+      setAvatarPreview(getDeliveryUrl(user?.avatar, "avatar"));
+    }
+  }, [user?.avatar]);
+  useEffect(() => {
     return () => {
       if (fileRef.current) {
-        console.log("clear");
         URL.revokeObjectURL(fileRef.current as any);
       }
     };
@@ -84,7 +90,7 @@ const EditProfile = () => {
             className="cursor-pointer px-3 py-2 border border-gray-200 rounded-md hover:bg-orange-400 hover:text-white t-300"
           >
             Change Avatar
-            <input id="avatar" className="hidden" type="file" {...register("avatar")} />
+            <input id="avatar" className="hidden" type="file" {...register("avatar")} accept="image/*" />
           </label>
         </div>
         <div className="space-y-1 mt-2">

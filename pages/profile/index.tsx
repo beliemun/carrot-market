@@ -1,5 +1,6 @@
 import { Layout } from "@components/shared";
 import { useMutation, useUser } from "@libs/client";
+import { getDeliveryUrl } from "@libs/client/utils";
 import { Review, User } from "@prisma/client";
 import { ResponseType } from "@shared/types";
 import { NextPage } from "next";
@@ -31,7 +32,14 @@ const Profile: NextPage = () => {
     <Layout title="프로필" hasTabBar={true}>
       <div>
         <div className="flex flex-row items-center px-4 w-full py-3 cursor-pointer">
-          <div className="w-10 h-10 bg-gray-200 rounded-full mr-4" />
+          {user?.avatar ? (
+            <img
+              src={getDeliveryUrl(user.avatar, "avatar")}
+              className="w-10 h-10 bg-gray-200 rounded-full mr-4"
+            />
+          ) : (
+            <div className="w-10 h-10 bg-gray-200 rounded-full mr-4" />
+          )}
           <div>
             <p className="font-medium">{user?.name}</p>
             <Link href={"/profile/edit"}>
