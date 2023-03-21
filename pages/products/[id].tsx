@@ -1,6 +1,7 @@
 import { LikeButton } from "@components/product";
-import { Layout } from "@components/shared";
-import { useMutation } from "@libs/client";
+import { Layout, ProfileSection } from "@components/shared";
+import { useMutation, useUser } from "@libs/client";
+import { getDeliveryUrl } from "@libs/client/utils";
 import { Product, User } from "@prisma/client";
 import { ResponseType } from "@shared/types";
 import { NextPage } from "next";
@@ -18,6 +19,7 @@ interface ProductResult extends ResponseType {
 }
 
 const Detail: NextPage = () => {
+  const { user } = useUser();
   const router = useRouter();
   // const { mutate: unboundMutate } = useSWRConfig();
   const { data, mutate: boundMutate } = useSWR<ProductResult>(
@@ -34,13 +36,15 @@ const Detail: NextPage = () => {
     <Layout title="Detail" canGoBack={true}>
       <div className="p-4">
         <div>
-          <div className="h-96 bg-gray-200 rounded-md" />
+          {data?.product.image ? (
+            <img src={getDeliveryUrl(data.product.image, "public")} className="h-96 bg-gray-200 rounded-md" />
+          ) : (
+            <div className="h-96 bg-gray-200 rounded-md" />
+          )}
           <div className="flex flex-row items-center border-b border-gray-200 w-full mb-2 py-3 cursor-pointer">
-            <div className="p-6 bg-gray-200 rounded-full mr-4" />
-            <div className="w-full">
-              <p className="font-medium">{data?.product?.user?.name}</p>
-              <p className="text-sm font-medium text-gray-400">View profile &rarr;</p>
-            </div>
+            {user ? (
+              <ProfileSection name={user.name} avatar={user.avatar} title={"View Profile"} url={"/profile"} />
+            ) : null}
           </div>
           <div>
             <h1 className="text-3xl font-bold mt-4">{data?.product.name}</h1>

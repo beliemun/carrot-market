@@ -1,11 +1,16 @@
+import { getDeliveryUrl } from "@libs/client/utils";
 import { Product } from "@prisma/client";
 import Link from "next/link";
 
-const ProductItem = ({ id, name, price, description, likeCount }: Product & { likeCount: number }) => {
+const ProductItem = ({ image, id, name, price, description, likeCount }: Product & { likeCount: number }) => {
   return (
     <Link className="flex p-4 cursor-pointer" href={`/products/${id}`}>
       <div className="flex w-full items-center space-x-4">
-        <div className="w-20 h-20 bg-gray-200 rounded-md" />
+        {image ? (
+          <img src={getDeliveryUrl(image, "avatar")} className="w-20 h-20 rounded-md" />
+        ) : (
+          <div className="w-20 h-20 bg-gray-200 rounded-md" />
+        )}
         <div className="flex flex-col">
           <h3 className="font-medium">{name}</h3>
           <span className="text-sm text-gray-400">

@@ -1,4 +1,4 @@
-import { Layout } from "@components/shared";
+import { Layout, ProfileSection } from "@components/shared";
 import { useMutation, useUser } from "@libs/client";
 import { getDeliveryUrl } from "@libs/client/utils";
 import { Review, User } from "@prisma/client";
@@ -31,22 +31,15 @@ const Profile: NextPage = () => {
   return (
     <Layout title="프로필" hasTabBar={true}>
       <div>
-        <div className="flex flex-row items-center px-4 w-full py-3 cursor-pointer">
-          {user?.avatar ? (
-            <img
-              src={getDeliveryUrl(user.avatar, "avatar")}
-              className="w-10 h-10 bg-gray-200 rounded-full mr-4"
-            />
-          ) : (
-            <div className="w-10 h-10 bg-gray-200 rounded-full mr-4" />
-          )}
-          <div>
-            <p className="font-medium">{user?.name}</p>
-            <Link href={"/profile/edit"}>
-              <p className="text-sm font-medium text-gray-400">Edit profile &rarr;</p>
-            </Link>
-          </div>
-        </div>
+        {user ? (
+          <ProfileSection
+            className={`px-4`}
+            name={user.name}
+            avatar={user.avatar}
+            title={"Edit Profile"}
+            url={"/profile/edit"}
+          />
+        ) : null}
         <div className="flex justify-around py-2">
           <div className="col-center  my-4">
             <Link
