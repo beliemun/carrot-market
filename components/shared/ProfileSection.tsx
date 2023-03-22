@@ -17,11 +17,13 @@ const ProfileSection = ({ className, name, avatar, title, url, rest }: IProfileS
       <div className="flex flex-row items-center w-full py-3 cursor-pointer">
         {avatar ? (
           <Image
-            alt="avatar"
+            alt="Avatar"
+            className="w-14 h-14 bg-gray-200 rounded-full mr-4"
             width={56}
             height={56}
+            placeholder="blur"
+            blurDataURL={getDeliveryUrl(avatar, "thumbnail")}
             src={getDeliveryUrl(avatar, "avatar")}
-            className="w-14 h-14 bg-gray-200 rounded-full mr-4"
           />
         ) : (
           <div className="w-14 h-14 bg-gray-200 rounded-full mr-4" />
