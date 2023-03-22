@@ -37,7 +37,7 @@ const Detail: NextPage = () => {
     <Layout title="Detail" canGoBack={true}>
       <div className="p-4">
         <div>
-          {data?.product.image ? (
+          {data?.product?.image ? (
             <div className="relative p-32">
               <Image
                 // priority={true}
