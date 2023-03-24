@@ -1,7 +1,6 @@
 import { prisma, withApiSession, withHandler } from "@libs/server";
 import { ResponseType } from "@shared/types";
 import { NextApiHandler } from "next";
-import answer from "./[id]/answer";
 
 const handler: NextApiHandler<ResponseType> = async (req, res) => {
   if (req.method === "GET") {
